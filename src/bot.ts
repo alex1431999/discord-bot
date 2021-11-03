@@ -1,17 +1,24 @@
 import { Client, Intents } from "discord.js";
+import Commands from "./commands";
 
 export default class Bot {
   private client: Client;
+
+  private commands: Commands;
 
   private authToken = process.env.AUTH_TOKEN;
 
   constructor() {
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+    this.commands = new Commands();
 
-    this.client.on('message', message => {
-      console.log(message.content);
-      message.channel.send('test');
-    });
+    this.client.on('interactionCreate', interaction => {
+      this.commands.commands.forEach(command => {
+        if (command.name === (interaction as any).commandName) {
+          command.action();
+        }
+      })
+    })
 
     this.login();
   }
