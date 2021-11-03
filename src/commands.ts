@@ -1,5 +1,13 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from "discord-api-types/v9";
+import Hunting from './hunting/hunting';
+
+type Command = {
+  name: string,
+  description: string,
+  response?: string,
+  action: () => void | string,
+}
 
 export default class Commands {
   private rest: REST;
@@ -8,11 +16,19 @@ export default class Commands {
   private clientId = process.env.CLIENT_ID;
   private guildId = process.env.GUILD_ID;
 
-  public commands = [
+  private hunting = new Hunting();
+
+  public commands: Command[] = [
     {
       name: 'test',
       description: 'test command',
       action: () => console.log('test command')
+    },
+    {
+      name: 'hunt-add',
+      description: 'add a new hunt',
+      action: () => this.hunting.addHunt(),
+      response: 'Can confirm I added a hunt 🚀',
     }
   ]
 
