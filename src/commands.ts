@@ -26,11 +26,6 @@ export default class Commands {
 
   public commands: Command[] = [
     {
-      name: 'test',
-      description: 'test command',
-      action: () => console.log('test command')
-    },
-    {
       name: 'hunt-add',
       description: 'Add a new hunt',
       action: () => this.hunting.addHunt(),
