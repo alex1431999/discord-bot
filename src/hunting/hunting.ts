@@ -9,6 +9,7 @@ export default class Hunting {
 
   constructor() {
     this.hunts = [];
+    this.addHunt();
   }
 
   public addHunt() {
@@ -17,5 +18,19 @@ export default class Hunting {
 
     this.huntIdCounter++;
     this.huntActive = hunt;
+  }
+
+  public distributeLoot() {
+    if (this.huntActive.wasteList.length === 0) {
+      return 'No waste added yet';
+    }
+
+    let lootDistributionString = '';
+
+    this.huntActive.wasteList.forEach(({ user, amount }) => {      
+      lootDistributionString += `👤 ${user.username} ${amount + this.huntActive.profitEach}k \n`
+    });
+
+    return lootDistributionString;
   }
 }

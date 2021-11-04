@@ -15,7 +15,7 @@ export default class Bot {
     this.client.on('interactionCreate', interaction => {
       this.commands.commands.forEach(command => {
         if (command.name === (interaction as any).commandName) {
-          const response = command.action() || command.response;
+          const response = command.action(interaction) || command.response;
 
           (interaction as any).reply(response);
         }

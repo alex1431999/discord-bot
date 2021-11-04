@@ -1,12 +1,18 @@
 import { REST } from '@discordjs/rest';
 import { Routes } from "discord-api-types/v9";
+import { Interaction } from 'discord.js';
 import Hunting from './hunting/hunting';
 
 type Command = {
   name: string,
   description: string,
+  options?: {
+    name: string,
+    description: string,
+    type: number,
+  }[],
   response?: string,
-  action: () => void | string,
+  action: (interaction?: Interaction) => void | string,
 }
 
 export default class Commands {
@@ -26,9 +32,51 @@ export default class Commands {
     },
     {
       name: 'hunt-add',
-      description: 'add a new hunt',
+      description: 'Add a new hunt',
       action: () => this.hunting.addHunt(),
       response: 'Can confirm I added a hunt 🚀',
+    },
+    {
+      name: 'waste-add',
+      description: 'Add your waste to the hunt',
+      options: [
+          {
+          name: 'amount',
+          description: 'The amount you have wasted',
+          type: 4 // integer,
+        }
+      ],
+      action: interaction => {
+        const user = interaction.user;
+        const amount = (interaction as any).options.getInteger('amount');
+
+        this.hunting.huntActive.addWaste({ user, amount });
+
+        return `Added ${amount}k to your waste`;
+      }
+    },
+    {
+      name: 'loot-add',
+      description: 'Add loot to your current hunt',
+      options: [
+        {
+          name: 'amount',
+          description: 'The amount of loot that you want to add',
+          type: 4 // integer,
+        },
+      ],
+      action: interaction => {
+        const amount = (interaction as any).options.getInteger('amount');
+
+        this.hunting.huntActive.lootValue += amount;
+
+        return `Added ${amount}k to your loot`;
+      },
+    },
+    {
+      name: 'loot-distribute',
+      description: 'Distribute the loot of the current hunt',
+      action: () => this.hunting.distributeLoot(),
     }
   ]
 
@@ -37,7 +85,7 @@ export default class Commands {
   }
 
   private get commandsData() {
-    return this.commands.map(({ name, description }) => ({ name, description }))
+    return this.commands.map(({ name, description, options }) => ({ name, description, options }))
   }
 
   public register() {
