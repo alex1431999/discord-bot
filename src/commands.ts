@@ -52,7 +52,7 @@ export default class Commands {
 
         this.hunting.huntActive.addWaste({ user, amount });
 
-        return `Added ${amount}k to your waste`;
+        return `LAWL dude imagine wasting ${amount}k 🤣`;
       }
     },
     {
@@ -70,7 +70,7 @@ export default class Commands {
 
         this.hunting.huntActive.lootValue += amount;
 
-        return `Added ${amount}k to your loot`;
+        return `Only ${amount}k of loot, can confirm Evan would have made double that 🤣`;
       },
     },
     {
