@@ -5,6 +5,9 @@
   "repository": "https://github.com/alex1431999/discord-bot.git",
   "author": "alex1431999 <alexhaller99@yahoo.de>",
   "license": "MIT",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
